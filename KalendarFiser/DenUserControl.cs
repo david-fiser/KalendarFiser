@@ -19,5 +19,11 @@ namespace KalendarFiser
         {
             lblDen.Text = cisloDne.ToString();
         }
+
+        private void DenUserControl_Click(object sender, EventArgs e)
+        {
+            UdalostForm udalostForm = new UdalostForm();
+            udalostForm.Show();
+        }
     }
 }

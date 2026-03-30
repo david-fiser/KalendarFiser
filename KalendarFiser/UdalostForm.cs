@@ -10,6 +10,11 @@ namespace KalendarFiser
             InitializeComponent();
         }
 
+        public void NastavUdalost(DateTime datum)
+        {
+            dateTimePicker.Value = datum;
+        }
+
         private void UdalostForm_Load(object sender, EventArgs e)
         {
 
