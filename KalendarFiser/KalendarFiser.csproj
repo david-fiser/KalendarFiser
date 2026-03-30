@@ -12,6 +12,8 @@
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -35,6 +37,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ValueTuple" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -46,14 +49,42 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form1.cs">
+    <Compile Include="DenUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DenUserControl.Designer.cs">
+      <DependentUpon>DenUserControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="KalendarForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="KalendarForm.Designer.cs">
+      <DependentUpon>KalendarForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Mesic.cs" />
+    <Compile Include="PrazdnyUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PrazdnyUserControl.Designer.cs">
+      <DependentUpon>PrazdnyUserControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UdalostForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UdalostForm.Designer.cs">
+      <DependentUpon>UdalostForm.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="DenUserControl.resx">
+      <DependentUpon>DenUserControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="KalendarForm.resx">
+      <DependentUpon>KalendarForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PrazdnyUserControl.resx">
+      <DependentUpon>PrazdnyUserControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -62,7 +93,11 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="UdalostForm.resx">
+      <DependentUpon>UdalostForm.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

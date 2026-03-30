@@ -1,13 +1,13 @@
 ﻿namespace KalendarFiser
 {
-    partial class Form1
+    partial class PrazdnyUserControl
     {
-        /// <summary>
+        /// <summary> 
         /// Vyžaduje se proměnná návrháře.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
+        /// <summary> 
         /// Uvolněte všechny používané prostředky.
         /// </summary>
         /// <param name="disposing">hodnota true, když by se měl spravovaný prostředek odstranit; jinak false.</param>
@@ -20,21 +20,26 @@
             base.Dispose(disposing);
         }
 
-        #region Kód generovaný Návrhářem Windows Form
+        #region Kód vygenerovaný pomocí Návrháře komponent
 
-        /// <summary>
+        /// <summary> 
         /// Metoda vyžadovaná pro podporu Návrháře - neupravovat
         /// obsah této metody v editoru kódu.
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            this.SuspendLayout();
+            // 
+            // PrazdnyUserControl
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "Form1";
+            this.Name = "PrazdnyUserControl";
+            this.Size = new System.Drawing.Size(151, 100);
+            this.ResumeLayout(false);
+
         }
 
         #endregion
     }
 }
-

@@ -1,0 +1,23 @@
+﻿using System;
+using System.Windows.Forms;
+
+namespace KalendarFiser
+{
+    public partial class DenUserControl : UserControl
+    {
+        public DenUserControl()
+        {
+            InitializeComponent();
+        }
+
+        private void DenUserControl_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        public void Dny(int cisloDne)
+        {
+            lblDen.Text = cisloDne.ToString();
+        }
+    }
+}
