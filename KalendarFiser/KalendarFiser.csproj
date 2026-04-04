@@ -69,6 +69,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Udalost.cs" />
     <Compile Include="UdalostForm.cs">
       <SubType>Form</SubType>
     </Compile>

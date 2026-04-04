@@ -1,5 +1,7 @@
 ﻿using Microsoft.Toolkit.Uwp.Notifications;
 using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
@@ -10,6 +12,9 @@ namespace KalendarFiser
 
         public Mesic Mesic { get; set; }
         public int Rok { get; set; }
+
+        private readonly Dictionary<DateTime, DenUserControl> slovnikDatumUserControl = new Dictionary<DateTime, DenUserControl>();
+        private readonly List<Udalost> udalosti = new List<Udalost>();
 
         public KalendarForm()
         {
@@ -23,6 +28,7 @@ namespace KalendarFiser
 
         private void NactiDny(Mesic mesic, int rok)
         {
+            slovnikDatumUserControl.Clear();
             lblMesicRok.Text = $"{mesic} {rok}";
             DateTime zacatekMesice = new DateTime(rok, mesic, 1);
 
@@ -50,7 +56,70 @@ namespace KalendarFiser
             {
                 DenUserControl denUC = new DenUserControl();
                 denUC.NastavDen(i, mesic, rok);
+                denUC.DenKliknut += OtevriUdalostForm;
+                denUC.UdalostKliknuta += OtevriSpravuUdalostiForm;
+
                 flowLayoutPanel.Controls.Add(denUC);
+                slovnikDatumUserControl.Add(denUC.Datum.Date, denUC);
+
+                if (denUC.Datum.Date == DateTime.Today)
+                {
+                    denUC.BackColor = Color.SeaShell;
+                    denUC.BorderStyle = BorderStyle.FixedSingle;
+                }
+            }
+        }
+
+        private void OtevriSpravuUdalostiForm(Udalost udalost)
+        {
+            using (UdalostForm udalostForm = new UdalostForm())
+            {
+                udalostForm.NactiUdalost(udalost);
+
+                if (udalostForm.ShowDialog() == DialogResult.OK)
+                {
+                    ObnovZobrazeniMesice();
+                }
+                else if (udalostForm.BylaSmazana)
+                {
+                    udalosti.Remove(udalost);
+                    ObnovZobrazeniMesice();
+                }
+            }
+        }
+
+        private void OtevriUdalostForm(DateTime datum)
+        {
+            using (UdalostForm udalostForm = new UdalostForm())
+            {
+                udalostForm.PrednastavUdalost(datum);
+
+                if (udalostForm.ShowDialog() == DialogResult.OK)
+                {
+                    Udalost novaUdalost = udalostForm.Udalost;
+                    udalosti.Add(novaUdalost);
+
+                    if (slovnikDatumUserControl.TryGetValue(novaUdalost.DatumACas.Date, out DenUserControl shodnyDenUC))
+                    {
+                        shodnyDenUC.PridejUdalost(novaUdalost);
+                    }
+                }
+            }
+        }
+
+        private void ObnovZobrazeniMesice()
+        {
+            flowLayoutPanel.Controls.Clear();
+            slovnikDatumUserControl.Clear();
+
+            NactiDny(Mesic, Rok);
+
+            foreach (Udalost udalost in udalosti)
+            {
+                if (slovnikDatumUserControl.TryGetValue(udalost.DatumACas.Date, out DenUserControl dayControl))
+                {
+                    dayControl.PridejUdalost(udalost);
+                }
             }
         }
 

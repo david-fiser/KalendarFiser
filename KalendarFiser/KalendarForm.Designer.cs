@@ -168,7 +168,8 @@
             this.Controls.Add(this.btnPredchozi);
             this.Controls.Add(this.btnNadchazejici);
             this.Controls.Add(this.flowLayoutPanel);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "KalendarForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Kalendář";

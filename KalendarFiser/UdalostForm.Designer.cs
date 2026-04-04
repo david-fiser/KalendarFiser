@@ -36,6 +36,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.btnUloz = new System.Windows.Forms.Button();
+            this.btnSmazat = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // txtBoxHodiny
@@ -130,20 +131,40 @@
             this.btnUloz.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnUloz.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.btnUloz.ForeColor = System.Drawing.Color.White;
-            this.btnUloz.Location = new System.Drawing.Point(17, 306);
+            this.btnUloz.Location = new System.Drawing.Point(17, 307);
             this.btnUloz.Name = "btnUloz";
-            this.btnUloz.Size = new System.Drawing.Size(388, 53);
+            this.btnUloz.Size = new System.Drawing.Size(264, 53);
             this.btnUloz.TabIndex = 9;
             this.btnUloz.Text = "Uložit událost";
             this.btnUloz.UseVisualStyleBackColor = false;
             this.btnUloz.Click += new System.EventHandler(this.BtnUloz_Click);
             // 
+            // btnSmazat
+            // 
+            this.btnSmazat.BackColor = System.Drawing.Color.Brown;
+            this.btnSmazat.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.btnSmazat.FlatAppearance.BorderSize = 3;
+            this.btnSmazat.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Firebrick;
+            this.btnSmazat.FlatAppearance.MouseOverBackColor = System.Drawing.Color.IndianRed;
+            this.btnSmazat.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSmazat.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.btnSmazat.ForeColor = System.Drawing.Color.White;
+            this.btnSmazat.Location = new System.Drawing.Point(287, 307);
+            this.btnSmazat.Name = "btnSmazat";
+            this.btnSmazat.Size = new System.Drawing.Size(118, 53);
+            this.btnSmazat.TabIndex = 10;
+            this.btnSmazat.Text = "Smazat";
+            this.btnSmazat.UseVisualStyleBackColor = false;
+            this.btnSmazat.Click += new System.EventHandler(this.BtnSmazat_Click);
+            // 
             // UdalostForm
             // 
+            this.AcceptButton = this.btnUloz;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(417, 372);
+            this.Controls.Add(this.btnSmazat);
             this.Controls.Add(this.btnUloz);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -156,7 +177,7 @@
             this.MaximizeBox = false;
             this.Name = "UdalostForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Vytvoření události: ";
+            this.Text = "Událost: ";
             this.Load += new System.EventHandler(this.UdalostForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -172,5 +193,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button btnUloz;
+        private System.Windows.Forms.Button btnSmazat;
     }
 }

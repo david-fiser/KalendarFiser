@@ -1,15 +1,19 @@
 ﻿using System;
-using System.Drawing;
 using System.Windows.Forms;
 
 namespace KalendarFiser
 {
     public partial class UdalostForm : Form
     {
+        public Udalost Udalost { get; set; }
+        public Udalost VytvorenaUdalost { get; private set; }
+        public bool BylaSmazana { get; private set; }
+        private Udalost editovanaUdalost;
 
         public UdalostForm()
         {
             InitializeComponent();
+            btnSmazat.Visible = false;
         }
 
         public void PrednastavUdalost(DateTime datum)
@@ -49,15 +53,62 @@ namespace KalendarFiser
 
         private void BtnUloz_Click(object sender, EventArgs e)
         {
-            string nazev = txtBoxNazev.Text.Split('\n')[0];
-            Label lblUdalost = new Label();
-            lblUdalost.Text = nazev;
-            lblUdalost.Font =  new Font("Segoe UI", 12, FontStyle.Regular);
-            lblUdalost.ForeColor = Color.FromArgb(221, 221, 255);
+            string nazev = txtBoxNazev.Text
+                .Split(new[] { "\r\n", "\n"}, StringSplitOptions.None)[0]
+                .Trim();
+
+            string popis = txtBoxNazev.Text.Trim();
+
+            int hodiny = int.Parse(txtBoxHodiny.Text);
+            int minuty = int.Parse(txtBoxMinuty.Text);
+
+            DateTime datum = dateTimePicker.Value.Date
+                .AddHours(hodiny)
+                .AddMinutes(minuty);
+
+            if (editovanaUdalost == null)
+            {
+                Udalost = new Udalost
+                {
+                    DatumACas = datum,
+                    Nazev = nazev,
+                    Popis = popis
+                };
+            }
+            else
+            {
+                editovanaUdalost.DatumACas = datum;
+                editovanaUdalost.Nazev = nazev;
+                editovanaUdalost.Popis = popis;
+            }
+
+            DialogResult = DialogResult.OK;
+            Close();
 
 
 
             // TODO: logika pro uložení upomínky události do souboru, který bude načítán při startu aplikace pro zobrazení upomínek.
+        }
+
+        public void NactiUdalost(Udalost udalost)
+        {
+            editovanaUdalost = udalost;
+
+            txtBoxNazev.Text = udalost.Popis;
+            dateTimePicker.Value = udalost.DatumACas;
+            txtBoxHodiny.Text = udalost.DatumACas.Hour.ToString();
+            txtBoxMinuty.Text = udalost.DatumACas.Minute.ToString();
+
+            btnSmazat.Visible = true;
+        }
+
+        private void BtnSmazat_Click(object sender, EventArgs e)
+        {
+            if (editovanaUdalost != null)
+            {
+                BylaSmazana = true;
+                Close();
+            }
         }
     }
 }
