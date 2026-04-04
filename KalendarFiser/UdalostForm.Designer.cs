@@ -50,9 +50,8 @@
             this.txtBoxHodiny.Name = "txtBoxHodiny";
             this.txtBoxHodiny.Size = new System.Drawing.Size(92, 96);
             this.txtBoxHodiny.TabIndex = 4;
-            this.txtBoxHodiny.Text = "99";
+            this.txtBoxHodiny.Text = "13";
             this.txtBoxHodiny.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.txtBoxHodiny.TextChanged += new System.EventHandler(this.KontrolaTxtBoxHodinyMinuty);
             // 
             // dateTimePicker
             // 
@@ -97,9 +96,8 @@
             this.txtBoxMinuty.Name = "txtBoxMinuty";
             this.txtBoxMinuty.Size = new System.Drawing.Size(92, 96);
             this.txtBoxMinuty.TabIndex = 5;
-            this.txtBoxMinuty.Text = "99";
+            this.txtBoxMinuty.Text = "30";
             this.txtBoxMinuty.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.txtBoxMinuty.TextChanged += new System.EventHandler(this.KontrolaTxtBoxHodinyMinuty);
             // 
             // label2
             // 
@@ -159,7 +157,6 @@
             // 
             // UdalostForm
             // 
-            this.AcceptButton = this.btnUloz;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace KalendarFiser
@@ -23,44 +24,28 @@ namespace KalendarFiser
 
         private void UdalostForm_Load(object sender, EventArgs e)
         {
-            txtBoxHodiny.Text = "13";
-            txtBoxMinuty.Text = "30";
             this.Text += dateTimePicker.Text;
-        }
-
-        private void KontrolaTxtBoxHodinyMinuty(object sender, EventArgs e)
-        {
-            try
-            {
-                Convert.ToInt32(txtBoxHodiny.Text);
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Zadejte platné číslo pro hodiny.","Neplatná hodnota času", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                txtBoxHodiny.Text = "13";
-            }
-
-            try
-            {
-                Convert.ToInt32(txtBoxMinuty.Text);
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Zadejte platné číslo pro minuty.", "Neplatná hodnota času", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                txtBoxMinuty.Text = "00";
-            }
         }
 
         private void BtnUloz_Click(object sender, EventArgs e)
         {
-            string nazev = txtBoxNazev.Text
-                .Split(new[] { "\r\n", "\n"}, StringSplitOptions.None)[0]
-                .Trim();
+            if (!int.TryParse(txtBoxHodiny.Text, out int hodiny) || hodiny < 0 || hodiny > 23)
+            {
+                MessageBox.Show("Zadejte platné hodiny (0–23).", "Neplatná hodnota hodin", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
-            string popis = txtBoxNazev.Text.Trim();
+            if (!int.TryParse(txtBoxMinuty.Text, out int minuty) || minuty < 0 || minuty > 59)
+            {
+                MessageBox.Show("Zadejte platné minuty (0–59).", "Neplatná hodnota minut", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
-            int hodiny = int.Parse(txtBoxHodiny.Text);
-            int minuty = int.Parse(txtBoxMinuty.Text);
+            string[] radky = txtBoxNazev.Text
+                .Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
+
+            string nazev = radky[0];
+            string popis = radky.Length > 1 ? string.Join(Environment.NewLine, radky.Skip(1)) : "";
 
             DateTime datum = dateTimePicker.Value.Date
                 .AddHours(hodiny)
@@ -94,7 +79,7 @@ namespace KalendarFiser
         {
             editovanaUdalost = udalost;
 
-            txtBoxNazev.Text = udalost.Popis;
+            txtBoxNazev.Text = udalost.Nazev + Environment.NewLine + udalost.Popis;
             dateTimePicker.Value = udalost.DatumACas;
             txtBoxHodiny.Text = udalost.DatumACas.Hour.ToString();
             txtBoxMinuty.Text = udalost.DatumACas.Minute.ToString();

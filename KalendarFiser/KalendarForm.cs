@@ -129,7 +129,7 @@ namespace KalendarFiser
             Mesic = now.Month;
             Rok = now.Year;
 
-            NactiDny(Mesic, Rok);            
+            ObnovZobrazeniMesice();
         }
 
         private void BtnNadchazejici_Click(object sender, EventArgs e)
@@ -138,7 +138,12 @@ namespace KalendarFiser
 
             Mesic++;
 
-            NactiDny(Mesic, Rok);
+            if (Mesic == 1)
+            {
+                Rok++; 
+            }
+
+            ObnovZobrazeniMesice();
         }
 
         private void BtnPredchozi_Click(object sender, EventArgs e)
@@ -147,7 +152,12 @@ namespace KalendarFiser
 
             Mesic--;
 
-            NactiDny(Mesic, Rok);
+            if (Mesic == 12)
+            {
+                Rok--;
+            }
+
+            ObnovZobrazeniMesice();
         }
 
         private void ZobrazUpominku()
