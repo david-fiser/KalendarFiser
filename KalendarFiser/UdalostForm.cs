@@ -17,7 +17,8 @@ namespace KalendarFiser
 
         private void UdalostForm_Load(object sender, EventArgs e)
         {
-
+            txtBoxHodiny.Text = "13";
+            txtBoxMinuty.Text = "30";
         }
     }
 }

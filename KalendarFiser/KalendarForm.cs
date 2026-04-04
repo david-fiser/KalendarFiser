@@ -7,6 +7,10 @@ namespace KalendarFiser
 {
     public partial class KalendarForm : Form
     {
+
+        public Mesic Mesic { get; set; }
+        public int Rok { get; set; }
+
         public KalendarForm()
         {
             InitializeComponent();
@@ -16,9 +20,6 @@ namespace KalendarFiser
         {
             NactiAktualniMesic();
         }
-
-        Mesic mesic;
-        int rok;
 
         private void NactiDny(Mesic mesic, int rok)
         {
@@ -48,7 +49,7 @@ namespace KalendarFiser
             for (int i = 1; i <= dny; i++)
             {
                 DenUserControl denUC = new DenUserControl();
-                denUC.Dny(i);
+                denUC.NastavDen(i, mesic, rok);
                 flowLayoutPanel.Controls.Add(denUC);
             }
         }
@@ -56,28 +57,28 @@ namespace KalendarFiser
         private void NactiAktualniMesic()
         {
             DateTime now = DateTime.Now;
-            mesic = now.Month;
-            rok = now.Year;
+            Mesic = now.Month;
+            Rok = now.Year;
 
-            NactiDny(mesic, rok);            
+            NactiDny(Mesic, Rok);            
         }
 
         private void BtnNadchazejici_Click(object sender, EventArgs e)
         {
             flowLayoutPanel.Controls.Clear();
 
-            mesic++;
+            Mesic++;
 
-            NactiDny(mesic, rok);
+            NactiDny(Mesic, Rok);
         }
 
         private void BtnPredchozi_Click(object sender, EventArgs e)
         {
             flowLayoutPanel.Controls.Clear();
 
-            mesic--;
+            Mesic--;
 
-            NactiDny(mesic, rok);
+            NactiDny(Mesic, Rok);
         }
 
         private void ZobrazUpominku()

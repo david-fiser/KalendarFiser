@@ -5,6 +5,7 @@ namespace KalendarFiser
 {
     public partial class DenUserControl : UserControl
     {
+        private DateTime datum;
         public DenUserControl()
         {
             InitializeComponent();
@@ -15,14 +16,16 @@ namespace KalendarFiser
 
         }
 
-        public void Dny(int cisloDne)
+        public void NastavDen(int den, int mesic, int rok)
         {
-            lblDen.Text = cisloDne.ToString();
+            datum = new DateTime(rok, mesic, den);
+            lblDen.Text = den.ToString();
         }
 
         private void DenUserControl_Click(object sender, EventArgs e)
         {
             UdalostForm udalostForm = new UdalostForm();
+            udalostForm.NastavUdalost(datum);
             udalostForm.Show();
         }
     }
