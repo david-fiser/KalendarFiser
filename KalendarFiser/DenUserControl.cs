@@ -25,7 +25,7 @@ namespace KalendarFiser
         private void DenUserControl_Click(object sender, EventArgs e)
         {
             UdalostForm udalostForm = new UdalostForm();
-            udalostForm.NastavUdalost(datum);
+            udalostForm.PrednastavUdalost(datum);
             udalostForm.Show();
         }
     }

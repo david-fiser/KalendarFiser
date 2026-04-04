@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.lblDen = new System.Windows.Forms.Label();
+            this.fLPUdalosti = new System.Windows.Forms.FlowLayoutPanel();
             this.SuspendLayout();
             // 
             // lblDen
@@ -40,12 +41,25 @@
             this.lblDen.Size = new System.Drawing.Size(28, 21);
             this.lblDen.TabIndex = 0;
             this.lblDen.Text = "00";
+            this.lblDen.Click += new System.EventHandler(this.DenUserControl_Click);
+            // 
+            // fLPUdalosti
+            // 
+            this.fLPUdalosti.AutoScroll = true;
+            this.fLPUdalosti.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.fLPUdalosti.Location = new System.Drawing.Point(3, 34);
+            this.fLPUdalosti.Name = "fLPUdalosti";
+            this.fLPUdalosti.Size = new System.Drawing.Size(148, 66);
+            this.fLPUdalosti.TabIndex = 1;
+            this.fLPUdalosti.WrapContents = false;
+            this.fLPUdalosti.Click += new System.EventHandler(this.DenUserControl_Click);
             // 
             // DenUserControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
+            this.Controls.Add(this.fLPUdalosti);
             this.Controls.Add(this.lblDen);
             this.Name = "DenUserControl";
             this.Size = new System.Drawing.Size(151, 100);
@@ -59,5 +73,6 @@
         #endregion
 
         private System.Windows.Forms.Label lblDen;
+        private System.Windows.Forms.FlowLayoutPanel fLPUdalosti;
     }
 }

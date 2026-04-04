@@ -30,14 +30,14 @@ namespace KalendarFiser
 
             int denVTydnu = (int)zacatekMesice.DayOfWeek;
 
-            // Přepočet na český týden (Pondělí = 0, Neděle = 6)
+            // Přepočet na český formát data
             if (denVTydnu == 0)
             {
-                denVTydnu = 6; // Neděle se posune na konec týdne
+                denVTydnu = 6; // Neděle je poslední den v týdnu, takže se posune na index 6
             }
             else
             {
-                denVTydnu -= 1; // Ostatní dny se posunou o jeden den zpět
+                denVTydnu -= 1; // Zbytek dní se posune o jeden index zpět, protože pondělí je první den v týdnu
             }
 
             for (int i = 0; i < denVTydnu; i++)
