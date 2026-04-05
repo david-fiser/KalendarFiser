@@ -54,6 +54,12 @@
     <Compile Include="DenUserControl.Designer.cs">
       <DependentUpon>DenUserControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="DetailDneForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DetailDneForm.Designer.cs">
+      <DependentUpon>DetailDneForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="KalendarForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -76,8 +82,17 @@
     <Compile Include="UdalostForm.Designer.cs">
       <DependentUpon>UdalostForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UpominkaForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UpominkaForm.Designer.cs">
+      <DependentUpon>UpominkaForm.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="DenUserControl.resx">
       <DependentUpon>DenUserControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DetailDneForm.resx">
+      <DependentUpon>DetailDneForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="KalendarForm.resx">
       <DependentUpon>KalendarForm.cs</DependentUpon>
@@ -97,6 +112,9 @@
     </Compile>
     <EmbeddedResource Include="UdalostForm.resx">
       <DependentUpon>UdalostForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UpominkaForm.resx">
+      <DependentUpon>UpominkaForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace KalendarFiser
@@ -56,8 +57,7 @@ namespace KalendarFiser
             {
                 DenUserControl denUC = new DenUserControl();
                 denUC.NastavDen(i, mesic, rok);
-                denUC.DenKliknut += OtevriUdalostForm;
-                denUC.UdalostKliknuta += OtevriSpravuUdalostiForm;
+                denUC.DenKliknut += OtevriDetailDneForm;
 
                 flowLayoutPanel.Controls.Add(denUC);
                 slovnikDatumUserControl.Add(denUC.Datum.Date, denUC);
@@ -88,22 +88,12 @@ namespace KalendarFiser
             }
         }
 
-        private void OtevriUdalostForm(DateTime datum)
+        private void OtevriDetailDneForm(DateTime datum)
         {
-            using (UdalostForm udalostForm = new UdalostForm())
+            using (DetailDneForm detailDneForm = new DetailDneForm(datum, udalosti))
             {
-                udalostForm.PrednastavUdalost(datum);
-
-                if (udalostForm.ShowDialog() == DialogResult.OK)
-                {
-                    Udalost novaUdalost = udalostForm.Udalost;
-                    udalosti.Add(novaUdalost);
-
-                    if (slovnikDatumUserControl.TryGetValue(novaUdalost.DatumACas.Date, out DenUserControl shodnyDenUC))
-                    {
-                        shodnyDenUC.PridejUdalost(novaUdalost);
-                    }
-                }
+                detailDneForm.ShowDialog();
+                ObnovZobrazeniMesice();
             }
         }
 
@@ -114,11 +104,11 @@ namespace KalendarFiser
 
             NactiDny(Mesic, Rok);
 
-            foreach (Udalost udalost in udalosti)
+            foreach (Udalost udalost in udalosti.OrderBy(u => u.DatumACas))
             {
-                if (slovnikDatumUserControl.TryGetValue(udalost.DatumACas.Date, out DenUserControl dayControl))
+                if (slovnikDatumUserControl.TryGetValue(udalost.DatumACas.Date, out DenUserControl shodnyDenUC))
                 {
-                    dayControl.PridejUdalost(udalost);
+                    shodnyDenUC.PridejUdalost(udalost);
                 }
             }
         }
@@ -134,8 +124,6 @@ namespace KalendarFiser
 
         private void BtnNadchazejici_Click(object sender, EventArgs e)
         {
-            flowLayoutPanel.Controls.Clear();
-
             Mesic++;
 
             if (Mesic == 1)
@@ -148,8 +136,6 @@ namespace KalendarFiser
 
         private void BtnPredchozi_Click(object sender, EventArgs e)
         {
-            flowLayoutPanel.Controls.Clear();
-
             Mesic--;
 
             if (Mesic == 12)

@@ -8,7 +8,6 @@ namespace KalendarFiser
     {
         public DateTime Datum { get; private set; }
         public event Action<DateTime> DenKliknut;
-        public event Action<Udalost> UdalostKliknuta;
         public DenUserControl()
         {
             InitializeComponent();
@@ -46,10 +45,7 @@ namespace KalendarFiser
 
         private void LblUdalost_Click(object sender, EventArgs e)
         {
-            if (sender is Label lbl && lbl.Tag is Udalost udalost)
-            {
-                UdalostKliknuta?.Invoke(udalost);
-            }
+            DenKliknut?.Invoke(Datum);         
         }
 
         public void VymazUdalosti()

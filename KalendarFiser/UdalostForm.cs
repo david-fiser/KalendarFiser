@@ -7,7 +7,6 @@ namespace KalendarFiser
     public partial class UdalostForm : Form
     {
         public Udalost Udalost { get; set; }
-        public Udalost VytvorenaUdalost { get; private set; }
         public bool BylaSmazana { get; private set; }
         private Udalost editovanaUdalost;
 
@@ -29,6 +28,14 @@ namespace KalendarFiser
 
         private void BtnUloz_Click(object sender, EventArgs e)
         {
+            string nazev = txtBoxNazev.Text.Trim();
+            string popis = txtBoxPopis.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(nazev))
+            {
+                MessageBox.Show("Zadejte název události.", "Neplatná hodnota názvu", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             if (!int.TryParse(txtBoxHodiny.Text, out int hodiny) || hodiny < 0 || hodiny > 23)
             {
                 MessageBox.Show("Zadejte platné hodiny (0–23).", "Neplatná hodnota hodin", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -41,30 +48,72 @@ namespace KalendarFiser
                 return;
             }
 
-            string[] radky = txtBoxNazev.Text
-                .Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
-
-            string nazev = radky[0];
-            string popis = radky.Length > 1 ? string.Join(Environment.NewLine, radky.Skip(1)) : "";
-
-            DateTime datum = dateTimePicker.Value.Date
-                .AddHours(hodiny)
-                .AddMinutes(minuty);
+            DateTime datum = dateTimePicker.Value.Date.AddHours(hodiny).AddMinutes(minuty);
 
             if (editovanaUdalost == null)
             {
+                bool upominkaNastavena; 
+                DateTime casUpominky = datum.AddMinutes(-30);
+
+                DialogResult vysledek = MessageBox.Show(
+                    $"Výchozí čas upomínky bude nastaven na {casUpominky:dd.MM.yyyy HH:mm}. Chcete ho změnit?", 
+                    "Nastavení upomínky", 
+                    MessageBoxButtons.YesNo, 
+                    MessageBoxIcon.Question);
+
+                if (vysledek == DialogResult.Yes)
+                {
+                    using (UpominkaForm upominkaForm = new UpominkaForm(casUpominky, nazev))
+                    {
+                        if (upominkaForm.ShowDialog() == DialogResult.OK)
+                        {
+                            casUpominky = upominkaForm.UpominkaCas;
+                            upominkaNastavena = upominkaForm.UpominkaNastavena;
+                        }
+                    }
+                }
                 Udalost = new Udalost
                 {
                     DatumACas = datum,
                     Nazev = nazev,
-                    Popis = popis
+                    Popis = popis,
                 };
             }
             else
             {
-                editovanaUdalost.DatumACas = datum;
-                editovanaUdalost.Nazev = nazev;
-                editovanaUdalost.Popis = popis;
+                if (editovanaUdalost.DatumACas != datum)
+                {
+                    editovanaUdalost.DatumACas = datum;
+                    editovanaUdalost.Nazev = nazev;
+                    editovanaUdalost.Popis = popis;
+
+                    DialogResult vysledek = MessageBox.Show(
+                        "Chcete upravit nastavení upomínky této události?",
+                        "Úprava upomínky",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question);
+
+                    if (vysledek == DialogResult.Yes)
+                    {
+                        using (UpominkaForm upominkaForm = new UpominkaForm(editovanaUdalost.UpominkaCas, editovanaUdalost.Nazev)) 
+                        {
+                            if (upominkaForm.ShowDialog() == DialogResult.OK)
+                            {
+                                editovanaUdalost.UpominkaCas = upominkaForm.UpominkaCas;
+                                editovanaUdalost.UpominkaNastavena = upominkaForm.UpominkaNastavena;
+                                editovanaUdalost.UpominkaZobrazena = false;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    editovanaUdalost.DatumACas = datum;
+                    editovanaUdalost.Nazev = nazev;
+                    editovanaUdalost.Popis = popis;
+                }
+
+                Udalost = editovanaUdalost;
             }
 
             DialogResult = DialogResult.OK;
@@ -79,7 +128,7 @@ namespace KalendarFiser
         {
             editovanaUdalost = udalost;
 
-            txtBoxNazev.Text = udalost.Nazev + Environment.NewLine + udalost.Popis;
+            txtBoxPopis.Text = udalost.Nazev + Environment.NewLine + udalost.Popis;
             dateTimePicker.Value = udalost.DatumACas;
             txtBoxHodiny.Text = udalost.DatumACas.Hour.ToString();
             txtBoxMinuty.Text = udalost.DatumACas.Minute.ToString();
