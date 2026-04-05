@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace KalendarFiser
@@ -14,16 +7,18 @@ namespace KalendarFiser
     {
         public DateTime UpominkaCas { get; private set; }
         public bool UpominkaNastavena { get; private set; }
-        public UpominkaForm(DateTime vychoziCasUpominky, string nazev)
+        public UpominkaForm(DateTime vychoziCasUpominky, string nazev, bool upominkaNastavena)
         {
             InitializeComponent();
 
             dateTimePicker.Value = vychoziCasUpominky.Date;
             txtBoxHodiny.Text = vychoziCasUpominky.Hour.ToString("00");
             txtBoxMinuty.Text = vychoziCasUpominky.Minute.ToString("00");
+            txtBoxNazev.Text = nazev;
+
+            checkBoxUpominka.Checked = !upominkaNastavena;
 
             AktualizujEnabledPrvku();
-            txtBoxNazev.Text = nazev;
         }
 
         private void CheckBoxUpominka_CheckedChanged(object sender, EventArgs e)
@@ -46,7 +41,7 @@ namespace KalendarFiser
 
             if (!UpominkaNastavena)
             {
-                UpominkaCas = dateTimePicker.Value.Date;
+                UpominkaCas = dateTimePicker.Value.Date.AddHours(12).AddMinutes(0);
                 DialogResult = DialogResult.OK;
                 Close();
                 return;

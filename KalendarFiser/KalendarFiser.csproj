@@ -67,6 +67,7 @@
       <DependentUpon>KalendarForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Mesic.cs" />
+    <Compile Include="Poznamka.cs" />
     <Compile Include="PrazdnyUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>

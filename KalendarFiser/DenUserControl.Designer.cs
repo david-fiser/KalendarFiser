@@ -63,7 +63,6 @@
             this.Controls.Add(this.lblDen);
             this.Name = "DenUserControl";
             this.Size = new System.Drawing.Size(151, 100);
-            this.Load += new System.EventHandler(this.DenUserControl_Load);
             this.Click += new System.EventHandler(this.DenUserControl_Click);
             this.ResumeLayout(false);
             this.PerformLayout();

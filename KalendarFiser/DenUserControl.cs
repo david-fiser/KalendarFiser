@@ -8,14 +8,24 @@ namespace KalendarFiser
     {
         public DateTime Datum { get; private set; }
         public event Action<DateTime> DenKliknut;
+        public bool MaPoznamku { get; set; }
         public DenUserControl()
         {
             InitializeComponent();
         }
 
-        private void DenUserControl_Load(object sender, EventArgs e)
+        protected override void OnPaint(PaintEventArgs e)
         {
+            base.OnPaint(e);
+            if (MaPoznamku)
+            {
+                int prumer = 10;
+                int odsazeni = 6;
+                int x = this.Width - prumer - odsazeni;
+                int y = odsazeni;
 
+                e.Graphics.FillEllipse(Brushes.SteelBlue, x, y, prumer, prumer);
+            }
         }
 
         public void NastavDen(int den, int mesic, int rok)

@@ -16,6 +16,7 @@ namespace KalendarFiser
 
         private readonly Dictionary<DateTime, DenUserControl> slovnikDatumUserControl = new Dictionary<DateTime, DenUserControl>();
         private readonly List<Udalost> udalosti = new List<Udalost>();
+        private List<Poznamka> poznamky = new List<Poznamka>();
 
         public KalendarForm()
         {
@@ -58,6 +59,7 @@ namespace KalendarFiser
                 DenUserControl denUC = new DenUserControl();
                 denUC.NastavDen(i, mesic, rok);
                 denUC.DenKliknut += OtevriDetailDneForm;
+                denUC.MaPoznamku = poznamky.Any(p => p.Datum.Date == denUC.Datum.Date);
 
                 flowLayoutPanel.Controls.Add(denUC);
                 slovnikDatumUserControl.Add(denUC.Datum.Date, denUC);
@@ -70,34 +72,16 @@ namespace KalendarFiser
             }
         }
 
-        private void OtevriSpravuUdalostiForm(Udalost udalost)
-        {
-            using (UdalostForm udalostForm = new UdalostForm())
-            {
-                udalostForm.NactiUdalost(udalost);
-
-                if (udalostForm.ShowDialog() == DialogResult.OK)
-                {
-                    ObnovZobrazeniMesice();
-                }
-                else if (udalostForm.BylaSmazana)
-                {
-                    udalosti.Remove(udalost);
-                    ObnovZobrazeniMesice();
-                }
-            }
-        }
-
         private void OtevriDetailDneForm(DateTime datum)
         {
-            using (DetailDneForm detailDneForm = new DetailDneForm(datum, udalosti))
+            using (DetailDneForm detailDneForm = new DetailDneForm(datum, udalosti, poznamky))
             {
                 detailDneForm.ShowDialog();
                 ObnovZobrazeniMesice();
             }
         }
 
-        private void ObnovZobrazeniMesice()
+        public void ObnovZobrazeniMesice()
         {
             flowLayoutPanel.Controls.Clear();
             slovnikDatumUserControl.Clear();
@@ -144,6 +128,35 @@ namespace KalendarFiser
             }
 
             ObnovZobrazeniMesice();
+        }
+
+        private Poznamka NajdiPoznamkuProDatum(DateTime datum)
+        {
+            return poznamky.FirstOrDefault(p => p.Datum.Date == datum.Date);
+        }
+
+        private void UlozNeboAktualizujPoznamku(DateTime datum, string text)
+        {
+            Poznamka existujiciPoznamka = NajdiPoznamkuProDatum(datum);
+
+            if (string.IsNullOrWhiteSpace(text))
+            {
+                if (existujiciPoznamka != null)
+                {
+                    poznamky.Remove(existujiciPoznamka);
+                }
+
+                return;
+            }
+
+            if (existujiciPoznamka is null)
+            {
+                poznamky.Add(new Poznamka(datum, text.Trim()));
+            }
+            else
+            {
+                existujiciPoznamka.Text = text.Trim();
+            }
         }
 
         private void ZobrazUpominku()
