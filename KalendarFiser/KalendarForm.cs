@@ -1,5 +1,4 @@
-﻿using Microsoft.Toolkit.Uwp.Notifications;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -11,12 +10,12 @@ namespace KalendarFiser
     public partial class KalendarForm : Form
     {
 
-        public Mesic Mesic { get; set; }
-        public int Rok { get; set; }
+        private Mesic Mesic { get; set; }
+        private int Rok { get; set; }
 
         private readonly Dictionary<DateTime, DenUserControl> slovnikDatumUserControl = new Dictionary<DateTime, DenUserControl>();
         private readonly List<Udalost> udalosti = new List<Udalost>();
-        private List<Poznamka> poznamky = new List<Poznamka>();
+        private readonly List<Poznamka> poznamky = new List<Poznamka>();
 
         public KalendarForm()
         {
@@ -128,52 +127,6 @@ namespace KalendarFiser
             }
 
             ObnovZobrazeniMesice();
-        }
-
-        private Poznamka NajdiPoznamkuProDatum(DateTime datum)
-        {
-            return poznamky.FirstOrDefault(p => p.Datum.Date == datum.Date);
-        }
-
-        private void UlozNeboAktualizujPoznamku(DateTime datum, string text)
-        {
-            Poznamka existujiciPoznamka = NajdiPoznamkuProDatum(datum);
-
-            if (string.IsNullOrWhiteSpace(text))
-            {
-                if (existujiciPoznamka != null)
-                {
-                    poznamky.Remove(existujiciPoznamka);
-                }
-
-                return;
-            }
-
-            if (existujiciPoznamka is null)
-            {
-                poznamky.Add(new Poznamka(datum, text.Trim()));
-            }
-            else
-            {
-                existujiciPoznamka.Text = text.Trim();
-            }
-        }
-
-        private void ZobrazUpominku()
-        {
-            // TODO: Zobrazení upomínky na událost ve zvoleném čase. Kontrola ze souboru upomínek po nastartování aplikace.
-            string tempImagePath = Path.Combine(Path.GetTempPath(), "KalendarIcon.png");
-
-            if (!File.Exists(tempImagePath))
-            {
-                Properties.Resources.calendar.Save(tempImagePath, System.Drawing.Imaging.ImageFormat.Png);
-            }
-
-            new ToastContentBuilder()
-                .AddText($"Upomínka v čase xx:xx")
-                .AddText($"Popis upomínky.")
-                .AddAppLogoOverride(new Uri("file:///" + tempImagePath), ToastGenericAppLogoCrop.Default)
-                .Show();
         }
     }
 }
