@@ -35,19 +35,19 @@ namespace KalendarFiser
 
             int dny = DateTime.DaysInMonth(rok, mesic);
 
-            int denVTydnu = (int)zacatekMesice.DayOfWeek;
+            int zacatekMesiceDenVTydnu = (int)zacatekMesice.DayOfWeek;
 
             // Přepočet na český formát data
-            if (denVTydnu == 0)
+            if (zacatekMesiceDenVTydnu == 0)
             {
-                denVTydnu = 6; // Neděle je poslední den v týdnu, takže se posune na index 6
+                zacatekMesiceDenVTydnu = 6; // Neděle je poslední den v týdnu, takže se posune na index 6
             }
             else
             {
-                denVTydnu -= 1; // Zbytek dní se posune o jeden index zpět, protože pondělí je první den v týdnu
+                zacatekMesiceDenVTydnu -= 1; // Zbytek dní se posune o jeden index zpět, protože pondělí je první den v týdnu
             }
 
-            for (int i = 0; i < denVTydnu; i++)
+            for (int i = 0; i < zacatekMesiceDenVTydnu; i++)
             {
                 PrazdnyUserControl prazdnyUC = new PrazdnyUserControl();
                 flowLayoutPanel.Controls.Add(prazdnyUC);
