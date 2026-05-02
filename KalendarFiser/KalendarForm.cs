@@ -4,6 +4,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using System.Text.Json;
 
 namespace KalendarFiser
 {
@@ -14,8 +15,9 @@ namespace KalendarFiser
         private int Rok { get; set; }
 
         private readonly Dictionary<DateTime, DenUserControl> slovnikDatumUserControl = new Dictionary<DateTime, DenUserControl>();
-        private readonly List<Udalost> udalosti = new List<Udalost>();
-        private readonly List<Poznamka> poznamky = new List<Poznamka>();
+        private List<Udalost> udalosti = new List<Udalost>();
+        private List<Poznamka> poznamky = new List<Poznamka>();
+        private readonly string cestaKSouboru = Path.Combine(Application.StartupPath, "data.json");
 
         public KalendarForm()
         {
@@ -24,7 +26,137 @@ namespace KalendarFiser
 
         private void KalendarForm_Load(object sender, EventArgs e)
         {
+            NactiData();
             NactiAktualniMesic();
+            InicializujTimerUpominek();
+            InicializujNotifikaciUpominek();
+        }
+
+        private void NactiData()
+        {
+            try
+            {
+                if (!File.Exists(cestaKSouboru))
+                {
+                    udalosti = new List<Udalost>();
+                    poznamky = new List<Poznamka>();
+                    return;
+                }
+
+                string json = File.ReadAllText(cestaKSouboru);
+
+                if (string.IsNullOrWhiteSpace(json))
+                {
+                    udalosti = new List<Udalost>();
+                    poznamky = new List<Poznamka>();
+                    return;
+                }
+
+                DataModel data = JsonSerializer.Deserialize<DataModel>(json);
+
+                udalosti = data?.Udalosti ?? new List<Udalost>();
+                poznamky = data?.Poznamky ?? new List<Poznamka>();
+            }
+            catch (Exception ex)
+            {
+                udalosti = new List<Udalost>();
+                poznamky = new List<Poznamka>();
+
+                MessageBox.Show(
+                    "Nepodařilo se načíst data. Zobrazí se prázdný kalendář.\n\nChyba: " + ex.Message,
+                    "Chyba načítání dat",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+            }
+        }
+
+        private void UlozData()
+        {
+            try
+            {
+                DataModel data = new DataModel
+                {
+                    Udalosti = udalosti,
+                    Poznamky = poznamky
+                };
+
+                JsonSerializerOptions options = new JsonSerializerOptions
+                {
+                    WriteIndented = true
+                };
+
+                string json = JsonSerializer.Serialize(data, options);
+                File.WriteAllText(cestaKSouboru, json);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Nepodařilo se uložit data. Zobrazí se prázdný kalendář.\n\nChyba: " + ex.Message,
+                    "Chyba ukládání dat",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+            }
+        }
+
+        private void InicializujTimerUpominek()
+        {
+            timer.Start();
+        }
+
+        private void InicializujNotifikaciUpominek()
+        {
+            notifyIcon.Icon = SystemIcons.Information;
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            ZkontrolujUpominky();
+        }
+
+        private void ZkontrolujUpominky()
+        {
+            DateTime ted = DateTime.Now;
+
+            List<Udalost> udalostiKUpozorneni = udalosti
+                .Where(u =>
+                    u.UpominkaNastavena &&
+                    !u.UpominkaZobrazena &&
+                    u.UpominkaCas <= ted)
+                .OrderBy(u => u.UpominkaCas)
+                .ToList();
+
+            if (udalostiKUpozorneni.Count > 1)
+            {
+                string text = string.Join("\n", udalostiKUpozorneni.Select(u => u.Nazev));
+
+                ZobrazNotifikaci("Upomínky pro události", text);
+
+                foreach (var u in udalostiKUpozorneni)
+                {
+                    u.UpominkaZobrazena = true;
+                }
+                UlozData();
+            }
+            else if (udalostiKUpozorneni.Count == 1)
+            {
+                Udalost u = udalostiKUpozorneni[0];
+
+                ZobrazNotifikaci("Upomínka pro událost", $"{u.Nazev}\n\n{u.DatumACas:dd.MM.yyyy HH:mm}");
+
+                u.UpominkaZobrazena = true;
+                UlozData();
+            }
+            else if (udalostiKUpozorneni.Count <= 0)
+            {
+                return;
+            }
+        }
+        private void ZobrazNotifikaci(string title, string text)
+        {
+            notifyIcon.BalloonTipTitle = title;
+            notifyIcon.BalloonTipText = text;
+            notifyIcon.BalloonTipIcon = ToolTipIcon.Info;
+            notifyIcon.ShowBalloonTip(5000);
         }
 
         private void NactiDny(Mesic mesic, int rok)
@@ -76,6 +208,7 @@ namespace KalendarFiser
             using (DetailDneForm detailDneForm = new DetailDneForm(datum, udalosti, poznamky))
             {
                 detailDneForm.ShowDialog();
+                UlozData();
                 ObnovZobrazeniMesice();
             }
         }

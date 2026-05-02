@@ -11,5 +11,9 @@ namespace KalendarFiser
             Datum = datum.Date;
             Text = text;
         }
+        public Poznamka() 
+        {
+
+        }
     }
 }

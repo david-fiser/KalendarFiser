@@ -110,6 +110,7 @@ namespace KalendarFiser
                 {
                     vybranaUdalost.UpominkaCas = upominkaForm.UpominkaCas;
                     vybranaUdalost.UpominkaNastavena = upominkaForm.UpominkaNastavena;
+                    vybranaUdalost.UpominkaZobrazena = false;
 
                     ObnovSeznamUdalosti();
                 }

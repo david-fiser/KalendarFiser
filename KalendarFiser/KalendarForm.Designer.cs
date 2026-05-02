@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.flowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.btnNadchazejici = new System.Windows.Forms.Button();
             this.btnPredchozi = new System.Windows.Forms.Button();
@@ -39,6 +40,8 @@
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.lblMesicRok = new System.Windows.Forms.Label();
+            this.timer = new System.Windows.Forms.Timer(this.components);
+            this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.SuspendLayout();
             // 
             // flowLayoutPanel
@@ -152,6 +155,16 @@
             this.lblMesicRok.Text = "MĚSÍC ROK";
             this.lblMesicRok.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // timer
+            // 
+            this.timer.Interval = 30000;
+            this.timer.Tick += new System.EventHandler(this.Timer_Tick);
+            // 
+            // notifyIcon
+            // 
+            this.notifyIcon.Text = "notifyIcon";
+            this.notifyIcon.Visible = true;
+            // 
             // KalendarForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -192,6 +205,8 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label lblMesicRok;
+        private System.Windows.Forms.Timer timer;
+        private System.Windows.Forms.NotifyIcon notifyIcon;
     }
 }
 
